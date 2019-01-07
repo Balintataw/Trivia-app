@@ -9,11 +9,12 @@
     "db:migrate-latest": "knex migrate:latest",
     "db:seed": "knex seed:run"
   },
-  "author": "Spencer Carli <spencer@handlebarlabs.com>",
+  "author": "Jossendal Development",
   "license": "ISC",
   "dependencies": {
     "body-parser": "^1.18.2",
     "csvtojson": "^1.1.9",
+    "expo-server-sdk": "^3.1.0",
     "express": "^4.16.3",
     "knex": "^0.14.4",
     "moment": "^2.22.0",

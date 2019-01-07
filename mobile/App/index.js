@@ -4,6 +4,7 @@ import { ActivityIndicator, View } from "react-native";
 import Question from "./screens/Question";
 import Waiting from "./screens/Waiting";
 import Welcome from "./screens/Welcome";
+import EnablePush from "./screens/EnablePush";
 
 import Navigator from "./components/Navigator";
 import Container from "./components/Container";
@@ -33,6 +34,7 @@ class App extends React.Component {
     }
 
     const initialSceneName = this.props.user.onboardingComplete ? "Question" : "Welcome";
+    // const initialSceneName = "EnablePush";
     return (
       <Container padding>
         <Navigator
@@ -42,6 +44,7 @@ class App extends React.Component {
             Welcome: { component: Welcome },
             Question: { component: Question },
             Waiting: { component: Waiting },
+            EnablePush: { component: EnablePush }
           }}
         />
       </Container>
