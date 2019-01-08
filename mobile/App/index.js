@@ -35,8 +35,9 @@ class App extends React.Component {
       );
     }
 
-    const initialSceneName = this.props.user.onboardingComplete ? "Question" : "Welcome";
+    // const initialSceneName = this.props.user.onboardingComplete ? "Question" : "Welcome";
     // const initialSceneName = "EnablePush";
+    const initialSceneName = "Waiting";
     // const initialSceneName = "NotificationHistory";
     return (
       <Container padding>

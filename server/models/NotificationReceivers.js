@@ -17,7 +17,6 @@ const getHistory = (token) => {
         )
         .select(`${Notification.dbKey}.*`)
         .then(docs => {
-            console.log('retreived docs', docs)
             return docs.map(doc => {
                 return {
                     ...doc,

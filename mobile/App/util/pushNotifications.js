@@ -1,10 +1,21 @@
 // stores permissions and tokens on our server
 import React from 'react';
-import { View, AppState } from 'react-native';
+import { View, AppState, Linking, Platform } from 'react-native';
 
-import { Notifications, Permissions } from 'expo';
+import { Notifications, Permissions, IntentLauncherAndroid } from 'expo';
 
 export const getPushToken = () => Notifications.getExpoPushTokenAsync();
+
+export const openSettings = () => {
+    if(Platform.OS === 'ios') {
+        Linking.openURL("app-settings:");
+    }
+    if(Platform.OS === 'android') {
+        IntentLauncherAndroid.startActivityAsync(
+            IntentLauncherAndroid.ACTION_APP_NOTIFICATION_SETTINGS
+        )
+    }
+}
 
 export const pushNotificationsEnabled = async () => {
     const { status: existingStatus } = await Permissions.getAsync(Permissions.NOTIFICATIONS);

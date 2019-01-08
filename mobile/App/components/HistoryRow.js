@@ -9,7 +9,6 @@ const HistoryRow = (props) => {
   if (props.index === 0) {
     rowStyle.push(styles.borderTop);
   }
-  console.log("GOLD", props)
   return (
     <View style={rowStyle}>
       {props.data.questions.map(question => <P key={question._id}>- {question.question}</P>)}
