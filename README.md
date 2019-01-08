@@ -1,10 +1,13 @@
-## Example App for "Master Push Notifications in React Native" Course
+## Example App as proof of concept for Expos' built in push notifications
 
-[Master Push Notifications in React Native](https://learn.handlebarlabs.com/p/master-push-notifications-in-react-native)
+[Build it here](https://learn.handlebarlabs.com/p/master-push-notifications-in-react-native)
 
 Based on the [Trivia Example App](https://github.com/HandlebarLabs/trivia-app). View that repo for additional documentation.
 
 # React Native App
+
+<img src="./mobile/assets/trivia_app_screen_1.jpg" alt="screen1" width="200"/>
+<img src="./mobile/assets/trivia_app_screen_2.jpg" alt="screen2" width="200"/>
 
 ## Getting Started
 
@@ -14,6 +17,7 @@ After cloning the repo and moving into the `mobile` directory run the following 
 
 - `yarn install` - Installs dependencies
 
+You may need to delete yarn.lock first
 You can then open the app from within the Expo XDE (or the command line) and run it from there.
 
 # Server
