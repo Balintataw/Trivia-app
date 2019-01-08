@@ -1,6 +1,6 @@
 // stores permissions and tokens on our server
 import React from 'react';
-import { View, AppState, Linking, Platform } from 'react-native';
+import { View, AppState, Linking, Platform, Alert } from 'react-native';
 
 import { Notifications, Permissions, IntentLauncherAndroid } from 'expo';
 
@@ -45,7 +45,8 @@ export const setBadgeNumber = (number = 0) => Notifications.setBadgeNumberAsync(
 
 export class PushNotificationManager extends React.Component {
     static defaultProps = {
-        onPushNotificationSelected: () => null
+        onPushNotificationSelected: () => null,
+        onPushNotificationReceived: () => null
     };
     componentDidMount() {
         setBadgeNumber(0);
@@ -70,7 +71,10 @@ export class PushNotificationManager extends React.Component {
             this.props.onPushNotificationSelected(data);
         } else if (origin === 'received') {
             //App was open when notification was received
-
+            Alert.alert("New questions available!", "Do you have what it takes?", [
+                { text: "Ignore", style: "Cancel" },
+                { text: "Show Me", onPress: () => this.props.onPushNotificationReceived(data)}
+            ]);
         }
     };
     render() {
