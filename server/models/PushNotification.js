@@ -26,29 +26,44 @@ const addPushToken = ({
     });
 }
 
-const sendNewNotificationToAll = ({ questions, nextQuestion }) => {
+const sendNewNotificationToAll = (notification) => {
+    const { questions, nextQuestionTime } = notification.data;
     const expo = new Expo();
     return db
         .table(dbKey)
         .then(docs => {
             const messages = [];
+            const notificationReceivers = [];
             docs.forEach(doc => {
+                notificationReceivers.push({
+                    pushNotificationId: doc._id,
+                    notificationId: notification._id
+                })
                 messages.push({
                     to: doc.token,
                     sound: "default",
-                    body: questions[0].question // this is the body of the question/answer displayed to the user in the notification
+                    body: questions[0].question, // this is the body of the question/answer displayed to the user in the notification
+                    badge: questions.length,
+                    data: {
+                        questions,
+                        nextQuestionTime 
+                    }
                 })
             })
             return {
-                messages
+                messages,
+                notificationReceivers
             };
         })
-        .then(({ messages }) => {
+        .then(({ messages, notificationReceivers }) => {
             const messageChunks = expo.chunkPushNotifications(messages);
             const expoRequests = messageChunks.map(chunk => {
                 return expo.sendPushNotificationsAsync(chunk);
             });
-            return Promise.all(expoRequests); //sends to provider
+            return { expoRequests, notificationReceivers };
+        }).then(({ expoRequests, notificationReceivers }) => {
+            const NotificationReceivers = require("./NotificationReceivers")
+            return Promise.all([...expoRequests, NotificationReceivers.createMany(notificationReceivers)]); //sends to provider
         })
 };
 

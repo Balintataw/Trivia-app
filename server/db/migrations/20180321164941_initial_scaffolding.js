@@ -17,9 +17,34 @@ exports.up = function (knex, Promise) {
             table.increments("_id");
             table.text("token");
             table.string("platform");
-            table.integer("timezoneOffset");
+            table.integer("timezoneOffset").defaultTo(480); //PST
         })
     );
+
+    chain.push(
+        knex.schema.createTable("notifications", table => {
+            table.increments("_id");
+            table.timestamp("createdAt").defaultTo(knex.fn.now());
+            table.text("data");
+        })
+    )
+
+    chain.push(
+        knex.schema.createTable("notificationReceivers", table => {
+            table.integer("pushNotificationId").unsigned().notNullable()
+            table
+            .foreign("pushNotificationId")
+            .onDelete("CASCADE")
+            .references("_id")
+            .inTable("pushNotifications")
+            table.integer("notificationId").unsigned().notNullable()
+            table
+            .foreign("notificationId")
+            .onDelete("CASCADE")
+            .references("_id")
+            .inTable("pushNotifications")
+        })
+    )
     return Promise.all(chain);
 };
 
