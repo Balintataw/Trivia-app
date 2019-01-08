@@ -1,10 +1,11 @@
 import React from "react";
-import { ActivityIndicator, View } from "react-native";
+import { ActivityIndicator, View, AppState } from "react-native";
 
 import Question from "./screens/Question";
 import Waiting from "./screens/Waiting";
 import Welcome from "./screens/Welcome";
 import EnablePush from "./screens/EnablePush";
+import NotificationHistory from './screens/NotificationHistory';
 
 import Navigator from "./components/Navigator";
 import Container from "./components/Container";
@@ -12,6 +13,7 @@ import Container from "./components/Container";
 import * as UserData from "./util/UserData";
 import * as QuestionData from "./util/QuestionData";
 import { loadFonts } from "./util/fonts";
+import { PushNotificationManager } from './util/pushNotifications';
 
 class App extends React.Component {
   state = {
@@ -19,8 +21,8 @@ class App extends React.Component {
   };
 
   componentDidMount() {
-    loadFonts().then(() => this.setState({ fontsReady: true }));
-  }
+      loadFonts().then(() => this.setState({ fontsReady: true }));
+  };
 
   render() {
     if (!this.props.user.ready || !this.props.question.ready || !this.state.fontsReady) {
@@ -35,6 +37,7 @@ class App extends React.Component {
 
     const initialSceneName = this.props.user.onboardingComplete ? "Question" : "Welcome";
     // const initialSceneName = "EnablePush";
+    // const initialSceneName = "NotificationHistory";
     return (
       <Container padding>
         <Navigator
@@ -44,7 +47,8 @@ class App extends React.Component {
             Welcome: { component: Welcome },
             Question: { component: Question },
             Waiting: { component: Waiting },
-            EnablePush: { component: EnablePush }
+            EnablePush: { component: EnablePush },
+            NotificationHistory: { component: NotificationHistory },
           }}
         />
       </Container>
@@ -52,12 +56,32 @@ class App extends React.Component {
   }
 }
 
+class WrappedApp extends React.Component {
+    handlePushNotification = (data => {
+        if (data.questions && data.nextQuestionTime) {
+            this.props.question.setQuestions({
+                data: {
+                    questions: data.questions,
+                    nextQuestionTime: data.nextQuestionTime
+                }
+            }, true)
+        } 
+    });
+    render() {
+        return (
+            <PushNotificationManager onPushNotificationSelected={this.handlePushNotification}>
+                <App {...this.props} />
+            </PushNotificationManager>
+        )
+    }
+};
+
 export default () => (
   <UserData.Provider>
     <QuestionData.Provider>
       <QuestionData.Consumer>
         {question => (
-          <UserData.Consumer>{user => <App question={question} user={user} />}</UserData.Consumer>
+          <UserData.Consumer>{user => <WrappedApp question={question} user={user} />}</UserData.Consumer>
         )}
       </QuestionData.Consumer>
     </QuestionData.Provider>

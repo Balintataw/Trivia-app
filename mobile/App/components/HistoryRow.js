@@ -4,12 +4,12 @@ import moment from "moment";
 
 import { P } from "./Text";
 
-export default (props) => {
+const HistoryRow = (props) => {
   const rowStyle = [styles.row];
   if (props.index === 0) {
     rowStyle.push(styles.borderTop);
   }
-
+  console.log("GOLD", props)
   return (
     <View style={rowStyle}>
       {props.data.questions.map(question => <P key={question._id}>- {question.question}</P>)}
@@ -30,3 +30,5 @@ const styles = StyleSheet.create({
     borderColor: "#F5F4F6",
   },
 });
+
+export default HistoryRow;
