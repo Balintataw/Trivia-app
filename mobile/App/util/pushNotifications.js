@@ -4,6 +4,8 @@ import { View, AppState, Linking, Platform, Alert } from 'react-native';
 
 import { Notifications, Permissions, IntentLauncherAndroid } from 'expo';
 
+import moment from 'moment';
+
 export const getPushToken = () => Notifications.getExpoPushTokenAsync();
 
 export const openSettings = () => {
@@ -81,4 +83,22 @@ export class PushNotificationManager extends React.Component {
         return <View style={{ flex:1 }}>{this.props.children}</View>
     }
 };
+
+//local notifications once a week on sunday at 1230 hours
+export const scheduleStatsNotification = () => 
+    console.log("TRYING TO SEND LOCAL NOTIFICATION")
+    Notifications.scheduleLocalNotificationAsync(
+        {
+            title: "Your stats are in!",
+            body: "See how you're doing",
+            data: {
+                target: "stats"
+            }
+        },
+        {
+            // time: moment().seconds(moment().seconds() + 15).toDate(),
+            time: moment().day(7).hour(12).minute(30).toDate(),
+            repeat: 'week'
+        }
+    ).catch(() => null)
 

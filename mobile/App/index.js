@@ -41,9 +41,9 @@ class App extends React.Component {
       );
     }
 
-    // const initialSceneName = this.props.user.onboardingComplete ? "Question" : "Welcome";
+    const initialSceneName = this.props.user.onboardingComplete ? "Question" : "Welcome";
     // const initialSceneName = "EnablePush";
-    const initialSceneName = "Waiting";
+    // const initialSceneName = "Waiting";
     // const initialSceneName = "NotificationHistory";
     return (
       <Container padding>
@@ -77,6 +77,10 @@ class WrappedApp extends React.Component {
                 }
             }, true).then(() => this.setState({ goToRoute: "Question" }) )
         } 
+
+        if (data.target === "stats") {
+            this.setState({ goToRoute: "Waiting" })
+        }
     });
     render() {
         return (
